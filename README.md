@@ -23,7 +23,12 @@
 
 ## 快速开始
 
-前提：Node ≥ 22.19、corepack 可用、git。假设你已经 clone 了官方 `dsh-desktop`。
+前提：Node ≥ 22.19、corepack 可用、git。假设你已经 clone 了官方桌面端：
+
+```bash
+git clone https://github.com/anywhere-labs/deepseek-harness-desktop.git dsh-desktop
+cd dsh-desktop
+```
 
 ### 1. 把桌面端的 submodule 重定向到本 fork
 
