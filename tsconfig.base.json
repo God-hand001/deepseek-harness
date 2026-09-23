@@ -373,6 +373,8 @@
       "@deepseek-ai/dsh-permission-presets": ["./packages/interaction/permission-presets/src"],
       "@deepseek-ai/dsh-permission-presets/invariant": ["./packages/interaction/permission-presets/src/invariant.ts"],
       "@deepseek-ai/dsh-persona": ["./packages/preset/persona/src"],
+      "@deepseek-ai/dsh-pi-agent-loop": ["./packages/core/pi-agent-loop/src"],
+      "@deepseek-ai/dsh-pi-agent-loop/invariant": ["./packages/core/pi-agent-loop/src/invariant.ts"],
       "@deepseek-ai/dsh-plan-mode": ["./packages/plan/plan-mode/src"],
       "@deepseek-ai/dsh-plan-mode/invariant": ["./packages/plan/plan-mode/src/invariant.ts"],
       "@deepseek-ai/dsh-plugin-package-inventory-deepseek": ["./packages/llm/plugin-package-inventory-deepseek/src"],

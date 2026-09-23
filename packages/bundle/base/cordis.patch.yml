@@ -494,8 +494,10 @@
 
     # Agents created at startup. The base stays empty; raw overlays may create
     # agents, while Web creates sessions on client request.
+    # Learning fork: the pi-agent-core-backed loop replaces the stock loop here.
+    # Flip the name back to '@deepseek-ai/dsh-agent-loop' to restore the stock loop.
     - id: agent-loop
-      name: '@deepseek-ai/dsh-agent-loop'
+      name: '@deepseek-ai/dsh-pi-agent-loop'
       config:
         agents: []
 

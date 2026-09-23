@@ -248,6 +248,7 @@ declare module '@deepseek-ai/cordis' {
 }
 
 export { DEFAULT_MAX_PARALLEL_TOOL_CALLS }
+export { inboxProjectionDefinition, inboxProjectionSchema, ReactLoopInbox } from './inbox.ts'
 
 /**
  * One launcher-selected session identity for a configured agent. `resume`
