@@ -28,6 +28,9 @@
 ```bash
 git clone https://github.com/anywhere-labs/deepseek-harness-desktop.git dsh-desktop
 cd dsh-desktop
+# 本适配器验证过的桌面端版本（其 beta 通道 = 0.1.6-alpha.2）。
+# 官方 master 会继续前进，sync 脚本会拒绝不匹配的 runtime 版本，所以必须钉住：
+git checkout 3cd31f9b87
 ```
 
 ### 1. 把桌面端的 submodule 重定向到本 fork
