@@ -59,7 +59,13 @@ corepack yarn start:beta   # 已构建，直接启动
 
 > **Windows 已知坑**：
 > - `upstream:pack:dsh` 需要 bsdtar 优先于 Git Bash 自带的 GNU tar（GNU tar 会把 `E:\...` 当成远程主机）：`PATH="/c/Windows/System32:$PATH" corepack yarn upstream:pack:dsh`
-> - `upstream:build:official` 内部嵌套调用 pnpm 时 corepack 可能解析到错误版本，如遇 `ERR_PNPM_BAD_PM_VERSION`，执行 `corepack install -g pnpm@11.7.0` 或改用独立安装的 pnpm 11.7.0 跑构建。
+> - `upstream:build:official` 经 corepack 嵌套调用 pnpm 时会报 `ERR_PNPM_BAD_PM_VERSION`（corepack 无法在内层 spawn 时对准项目的 pnpm 11.7.0）。修法：**绕过 corepack，用独立安装的 pnpm 11.7.0 直接进 submodule 构建**——`npm i -g pnpm@11.7.0` 后执行：
+>   ```bash
+>   cd deepseek-harness
+>   CI=true DSH_BUILD_CLIENT_PROFILE=official pnpm run build
+>   cd ..
+>   ```
+>   其余步骤仍按上面的 yarn 脚本走。
 
 ---
 
