@@ -36,7 +36,6 @@ git checkout 3cd31f9b87
 ### 1. 把桌面端的 submodule 重定向到本 fork
 
 ```bash
-cd dsh-desktop
 git config submodule.deepseek-harness.url https://github.com/<你的用户名>/deepseek-harness.git
 git config submodule.deepseek-harness.branch pi-loop
 git submodule update --init --remote
@@ -50,15 +49,35 @@ corepack yarn upstream:install        # submodule 内安装依赖
 corepack yarn upstream:build:official # 官方 profile 构建（pi 包会一起编译）
 corepack yarn upstream:pack:dsh       # 打包 tgz
 node scripts/sync-vendored-runtime.mjs --write
-corepack yarn install                 # 重新解析，pi 包进入桌面端 node_modules
 ```
 
-### 3. 启动桌面端
+### 3. 让桌面端插件认识 pi 包（一行依赖）
+
+pi 包此时已 vendor 进仓库，但桌面端插件的运行时解析以它自己的依赖为准——在
+`dsh-plugin-desktop-beta/package.json` 的 `dependencies` 里（按字母序放在
+`"@deepseek-ai/dsh-persona"` 之后）加一行：
+
+```json
+"@deepseek-ai/dsh-pi-agent-loop": "0.1.6-alpha.2",
+```
+
+然后 `corepack yarn install`。（如果你 clone 的是本适配器作者的
+[dsh-desktop-pi](https://github.com/God-hand001/dsh-desktop-pi) 而非官方桌面端，
+这一步已经做好了。）
+
+### 4. 启动桌面端
 
 ```bash
-corepack yarn dev:beta     # 首次 / 改过代码后（构建 + 启动）
-corepack yarn start:beta   # 已构建，直接启动
+corepack yarn workspace dsh-community-market build          # 市场包构建
+corepack yarn workspace dsh-plugin-desktop-beta build       # 桌面端插件构建
+corepack yarn workspace dsh-plugin-desktop-beta prepare:electron-native
+cd dsh-plugin-desktop-beta && node lib\bin.js               # 启动（Windows 下 git-bash 用 node lib/bin.js）
 ```
+
+> 上游的 `yarn dev:beta` / `yarn start:beta` 也可以，但其前置步骤
+> `aa:prepare-release`（agents-anywhere 发布准备）在 `3cd31f9b87` 提交上存在
+> TypeScript 类型错误（上游问题，与适配器无关），会拦截启动——上面等价的
+> 手动步骤跳过了这一步。
 
 > **Windows 已知坑**：
 > - `upstream:pack:dsh` 需要 bsdtar 优先于 Git Bash 自带的 GNU tar（GNU tar 会把 `E:\...` 当成远程主机）：`PATH="/c/Windows/System32:$PATH" corepack yarn upstream:pack:dsh`
@@ -69,6 +88,8 @@ corepack yarn start:beta   # 已构建，直接启动
 >   cd ..
 >   ```
 >   其余步骤仍按上面的 yarn 脚本走。
+> - 首次启动报 `electron is not available in this installation`：桌面端关闭了依赖安装脚本，Electron 二进制在首次启动时按需下载；网络不通时可改用镜像
+>   `set ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/` 后重试，或从任一可运行的同类安装里复制 `node_modules/electron/dist`。
 
 ---
 
